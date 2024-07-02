@@ -16,7 +16,16 @@ public class ParkingLot
 	private final List<BikeSpot> bikeSpots;
 	private final List<CarSpot> carSpots;
 
-	public ParkingLot(int numberOfBikeParkingSpots, int numberOfCarParkingSpots)
+	private static ParkingLot parkingLot;
+
+	public static synchronized ParkingLot getInstance()
+	{
+		if (parkingLot == null)
+			parkingLot = new ParkingLot(10, 10);
+		return parkingLot;
+	}
+
+	private ParkingLot(int numberOfBikeParkingSpots, int numberOfCarParkingSpots)
 	{
 		this.bikeSpots = new ArrayList<>();
 		this.carSpots = new ArrayList<>();
@@ -53,8 +62,7 @@ public class ParkingLot
 			spot = getNextAvailableBikeSpot();
 		}
 		spot.assignVehicletoSpot(vehicle);
-		Ticket ticket = new Ticket(spot.getParkingSpotId(), vehicle.getRegistrationNumber(),
-				vehicle.getVehicleType().name(), new java.util.Date());
+		Ticket ticket = new Ticket(spot.getParkingSpotId(), vehicle, new java.util.Date());
 		return ticket;
 	}
 
@@ -116,19 +124,19 @@ public class ParkingLot
 	{
 		int costByHours = 0;
 		ParkingSpot spot;
-		if (ticket.getVehicleType().equals(VehicleType.CAR.name()))
+		if (ticket.getVehicle().getVehicleType().name().equals(VehicleType.CAR.name()))
 		{
-			spot = getCarSpotByRegistrationNumber(ticket.getVehicleNumber());
+			spot = getCarSpotByRegistrationNumber(ticket.getVehicle().getRegistrationNumber());
 		}
 		else
 		{
-			spot = getBikeSpotByRegistrationNumber(ticket.getVehicleNumber());
+			spot = getBikeSpotByRegistrationNumber(ticket.getVehicle().getRegistrationNumber());
 		}
 		spot.freeVehiclefromSpot();
 		int hours = getHoursParked(ticket.getDate(), new Date());
-		System.out.println(
-				"Vehicle with registration " + ticket.getVehicleNumber() + " at slot number " + ticket.getSlotNumber()
-						+ " was parked for " + hours + " hours and the total charge is " + costByHours);
+		System.out.println("Vehicle with registration " + ticket.getVehicle().getRegistrationNumber()
+				+ " at slot number " + ticket.getSlotNumber() + " was parked for " + hours
+				+ " hours and the total charge is " + costByHours);
 	}
 
 	private int getHoursParked(Date startDate, Date endDate)
@@ -136,7 +144,6 @@ public class ParkingLot
 		long secs = (endDate.getTime() - startDate.getTime()) / 1000;
 		int hours = (int) (secs / 3600);
 		return hours;
-
 	}
 
 }

@@ -30,4 +30,10 @@ public class Vehicle
 	{
 		this.vehicleType = vehicleType;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Vehicle [registrationNumber=" + registrationNumber + ", vehicleType=" + vehicleType + "]";
+	}
 }

@@ -2,18 +2,18 @@ package com.karthik.ParkingLotSystem.Service;
 
 import java.util.Date;
 
+import com.karthik.ParkingLotSystem.Vehicle.Vehicle;
+
 public class Ticket
 {
 	private int slotNumber;
-	private String vehicleNumber;
-	private String vehicleType;
+	private Vehicle vehicle;
 	private Date date;
 
-	public Ticket(int slotNumber, String vehicleNumber, String vehicleType, Date date)
+	public Ticket(int slotNumber, Vehicle vehicle, Date date)
 	{
 		this.slotNumber = slotNumber;
-		this.vehicleNumber = vehicleNumber;
-		this.vehicleType = vehicleType;
+		this.vehicle = vehicle;
 		this.date = date;
 	}
 
@@ -37,29 +37,19 @@ public class Ticket
 		this.slotNumber = slotNumber;
 	}
 
-	public String getVehicleNumber()
+	public Vehicle getVehicle()
 	{
-		return vehicleNumber;
+		return vehicle;
 	}
 
-	public void setVehicleNumber(String vehicleNumber)
+	public void setVehicle(Vehicle vehicle)
 	{
-		this.vehicleNumber = vehicleNumber;
-	}
-	
-	public String getVehicleType()
-	{
-		return vehicleType;
-	}
-
-	public void setVehicleType(String vehicleType)
-	{
-		this.vehicleType = vehicleType;
+		this.vehicle = vehicle;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Ticket [slotNumber=" + slotNumber + ", vehicleNumber=" + vehicleNumber + ", vehicleType=" + vehicleType + ", date=" + date + "]";
+		return "Ticket [slotNumber=" + slotNumber + ", date=" + date + ", " + vehicle + "]";
 	}
 }
